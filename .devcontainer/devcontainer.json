@@ -1,13 +1,17 @@
 {
 	"name": "Chatwoot Development Codespace",
-	"dockerComposeFile": ["../docker-compose.yaml"],
-
-  "service": "rails",
 
 	"settings": { 
 		"terminal.integrated.shell.linux": "/bin/zsh"
 	},
 
+  "service": "base",
+
+  // 3000 rails
+  // 3035 webpacker
+  // 5432 postgres
+  // 6379 redis
+  // 1025,8025 mailhog
   "forwardPorts": [3000,3035,5432,6379,1025,8025]
 
 }

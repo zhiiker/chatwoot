@@ -102,8 +102,6 @@ services:
       - redis:/data/redis
     ports:
       - '6379:6379'
-    environment:
-      - REDIS_PASSWORD=
 
   mailhog:
     image: mailhog/mailhog
