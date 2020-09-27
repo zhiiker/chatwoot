@@ -5,8 +5,8 @@ FROM mcr.microsoft.com/vscode/devcontainers/ruby:${VARIANT}
 ARG NODE_VERSION="lts/*"
 RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"
 
-RUN apk update \
-  && apk add \
+RUN apt-get update \
+  && apt-get -y install --no-install-recommends \
     openssl \
     tar \
     build-base \
@@ -18,6 +18,12 @@ RUN apk update \
     imagemagick \
     zsh\
   && gem install bundler
+
+# [Optional] Uncomment this line to install additional gems.
+# RUN gem install <your-gem-names-here>
+
+# [Optional] Uncomment this line to install global node packages.
+# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
 
 
 
