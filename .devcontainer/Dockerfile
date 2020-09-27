@@ -44,7 +44,9 @@ RUN gem install bundler
 #########################################
 
 WORKDIR /home/codespace/workspace/chatwoot
-COPY .env.example .env
-RUN rvm install
-RUN bundle install 
-RUN yarn install
+RUN ls
+RUN pwd 
+# COPY .env.example .env
+# RUN rvm install
+# RUN bundle install 
+# RUN yarn install
