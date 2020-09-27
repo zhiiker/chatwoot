@@ -23,5 +23,5 @@
   "forwardPorts": [3000,3035,5432,6379,1025,8025],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "bundle exec rake:setup",
+	"postCreateCommand": "cp .env.example .env && rvm install && bundle && yarn && bundle exec rake:setup",
 }
