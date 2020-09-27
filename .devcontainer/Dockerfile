@@ -40,8 +40,11 @@ RUN gem install bundler
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
 
 
-# do the set up required for chatwoot app
-RUN rvm install
+# Do the set up required for chatwoot app
+#########################################
+
+# TODO: update ruby here . figure it out 
+# RUN rvm install
 RUN cp .env.example .env
 RUN bundle install 
 RUN yarn install
