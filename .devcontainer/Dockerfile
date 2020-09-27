@@ -13,6 +13,7 @@ RUN apk update \
     yarn \
     git \
     imagemagick \
+    zsh\
   && gem install bundler
 
 
