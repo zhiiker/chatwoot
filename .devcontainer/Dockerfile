@@ -43,10 +43,10 @@ RUN gem install bundler
 # Do the set up required for chatwoot app
 #########################################
 
-WORKDIR /home/codespace/workspace/chatwoot
+
 RUN ls
 RUN pwd 
-# COPY .env.example .env
+COPY .env.example .env
 # RUN rvm install
 # RUN bundle install 
 # RUN yarn install
