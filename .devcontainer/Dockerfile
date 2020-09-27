@@ -41,6 +41,7 @@ RUN gem install bundler
 
 
 # do the set up required for chatwoot app
+RUN rvm install
 RUN cp .env.example .env
 RUN bundle install 
 RUN yarn install
