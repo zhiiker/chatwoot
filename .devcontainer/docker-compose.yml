@@ -7,8 +7,17 @@ version: '3'
 services:
   app: 
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        # Update 'VARIANT' to pick a Ruby version: 2, 2.7, 2.6, 2.5
+        VARIANT: 2.7
+        # [Choice] Install Node.js
+        INSTALL_NODE: "true"
+        NODE_VERSION: "lts/*"
+        # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
+        USER_UID: 1000
+        USER_GID: 1000
 
     volumes:
       - ..:/workspace:cached
@@ -27,20 +36,19 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
-      POSTGRES_PASSWORD: 
+      POSTGRES_PASSWORD: postgres
 
-  redis:
-    image: redis:alpine
-    restart: unless-stopped
-    network_mode: service:db
-    volumes:
-      - /data/redis:/data
+  # redis:
+  #   image: redis:alpine
+  #   restart: unless-stopped
+  #   network_mode: service:db
+  #   volumes:
+  #     - /data/redis:/data
 
-  mailhog:
-    restart: unless-stopped
-    image: mailhog/mailhog
-    network_mode: service:db
+  # mailhog:
+  #   restart: unless-stopped
+  #   image: mailhog/mailhog
+  #   network_mode: service:db
   
 volumes:
   postgres-data:
-  redis:
