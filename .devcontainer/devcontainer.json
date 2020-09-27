@@ -1,6 +1,8 @@
 {
 	"name": "Chatwoot Development Codespace",
 
+  "dockerComposeFile": ["docker-compose.yml"],
+
 	"settings": { 
 		"terminal.integrated.shell.linux": "/bin/zsh"
 	},
