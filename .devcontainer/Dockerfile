@@ -43,8 +43,8 @@ RUN gem install bundler
 # Do the set up required for chatwoot app
 #########################################
 
-# TODO: update ruby here . figure it out 
+# TODO: move some logic from devcontainer to here. figure it out how to 
 # RUN rvm install
-RUN cp .env.example .env
-RUN bundle install 
-RUN yarn install
+# RUN cp .env.example .env
+# RUN bundle install 
+# RUN yarn install
