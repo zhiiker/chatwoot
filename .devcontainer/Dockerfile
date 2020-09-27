@@ -45,6 +45,6 @@ RUN gem install bundler
 
 # TODO: move some logic from devcontainer to here. figure it out how to 
 # RUN rvm install
-# RUN cp .env.example .env
-# RUN bundle install 
-# RUN yarn install
+COPY .env.example .env
+RUN bundle install 
+RUN yarn install

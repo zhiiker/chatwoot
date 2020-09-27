@@ -16,6 +16,5 @@
   "forwardPorts": [3000,3035,5432,6379,1025,8025],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  // TODO: can we move some of these to the Dockerfile ?
-	"postCreateCommand": "cp .env.example .env && rvm install && bundle install && yarn install && bundle exec rake:setup",
+	"postCreateCommand": "bundle exec rake:setup",
 }
