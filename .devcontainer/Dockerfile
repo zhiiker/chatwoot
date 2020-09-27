@@ -11,12 +11,13 @@ RUN apt-get update \
     tar \
     build-base \
     tzdata \
-    postgresql-dev \
     postgresql-client \
     yarn \
     git \
     imagemagick \
     zsh
+
+# packages: postgresql-server-dev-all
 
 RUN gem install bundler
 
