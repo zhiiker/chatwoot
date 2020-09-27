@@ -16,7 +16,13 @@ ARG INSTALL_NODE="true"
 ARG NODE_VERSION="lts/*"
 RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "source /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"; fi
 
- RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+
+# tmux is for overmind 
+# TODO : install foreman in future
+# packages: postgresql-server-dev-all 
+# may be postgres in same machine 
+
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
   && apt-get -y install --no-install-recommends \
     libssl-dev \
     tar \
@@ -25,9 +31,8 @@ RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "source /usr/local/shar
     yarn \
     git \
     imagemagick \
+    tmux \
     zsh
-
-# packages: postgresql-server-dev-all
 
 RUN gem install bundler
 
@@ -35,4 +40,7 @@ RUN gem install bundler
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
 
 
-
+# do the set up required for chatwoot app
+RUN cp .env.example .env
+RUN bundle install 
+RUN yarn install
