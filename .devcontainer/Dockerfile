@@ -45,7 +45,7 @@ RUN gem install bundler
 
 # TODO: move some logic from devcontainer to here. figure it out how to 
 # RUN rvm install
-WORKDIR /home/codespace/workspace/chatwoot
+WORKDIR /workspace
 COPY .env.example .env
 RUN bundle install 
 RUN yarn install
