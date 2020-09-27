@@ -7,9 +7,8 @@ RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSI
 
 RUN apt-get update \
   && apt-get -y install --no-install-recommends \
-    openssl \
+    libssl-dev \
     tar \
-    build-base \
     tzdata \
     postgresql-client \
     yarn \
