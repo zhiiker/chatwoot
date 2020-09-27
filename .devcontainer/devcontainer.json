@@ -17,5 +17,5 @@
   "forwardPorts": [3000,3035,5432,6379,1025,8025],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-	//"postCreateCommand": "cp .env.example .env && bundle install && yarn install",
+	"postCreateCommand": "cp .env.example .env && bundle install && yarn install",
 }
