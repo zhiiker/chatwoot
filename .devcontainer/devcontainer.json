@@ -25,6 +25,6 @@
   "appPort": [3000, 3035],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  // #TODO: can we move some of these logic into dockerfile ?
-	"postCreateCommand": "bundle exec rake:setup",
+  // #TODO: can we move logic of copy env file into dockerfile ?
+	"postCreateCommand": "cp .env.example .env && bundle exec rake:setup",
 }

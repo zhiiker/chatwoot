@@ -34,8 +34,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     tmux \
     zsh
 
-RUN gem install bundler
-
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
 
@@ -44,7 +42,10 @@ RUN gem install bundler
 WORKDIR /workspace
 COPY . /workspace
 
-RUN rvm install
+# TODO: figure out installing rvm
+# RUN rvm install
+COPY Gemfile Gemfile.lock ./
+RUN gem install bundler
 RUN bundle install
+COPY package.json yarn.lock ./
 RUN yarn install
-RUN cp .env.example .env
