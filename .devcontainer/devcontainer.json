@@ -23,5 +23,6 @@
   "forwardPorts": [3000,3035,5432,6379,1025,8025],
 
   // Use 'postCreateCommand' to run commands after the container is created.
+  // #TODO: can we move some of these logic into dockerfile ?
 	"postCreateCommand": "cp .env.example .env && rvm install && bundle && yarn && bundle exec rake:setup",
 }
