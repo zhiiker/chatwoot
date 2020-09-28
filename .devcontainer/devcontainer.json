@@ -20,9 +20,11 @@
   // 5432 postgres
   // 6379 redis
   // 1025,8025 mailhog
-  "forwardPorts": [3000,3035,5432,6379,1025,8025],
+  "forwardPorts": [5432,6379,1025,8025],
+  //your application may need to listen on all interfaces (0.0.0.0) not just localhost for it to be available externally. Defaults to []
+  "appPort": [3000, 3035],
 
   // Use 'postCreateCommand' to run commands after the container is created.
   // #TODO: can we move some of these logic into dockerfile ?
-	"postCreateCommand": "cp .env.example .env && rvm install && bundle exec rake:setup",
+	"postCreateCommand": "bundle exec rake:setup",
 }
