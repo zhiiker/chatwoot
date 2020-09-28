@@ -42,11 +42,12 @@ RUN gem install bundler
 
 # Do the set up required for chatwoot app
 # TODO: check if we can move logic from devcontainer.json to here 
-RUN mkdir -p /app
-WORKDIR /app
-
-COPY Gemfile Gemfile.lock ./
+RUN yarn install
 RUN bundle install
 
-COPY package.json yarn.lock ./
-RUN yarn install
+# RUN mkdir -p /app
+# WORKDIR /app
+# COPY Gemfile Gemfile.lock ./
+
+
+#COPY package.json yarn.lock ./
