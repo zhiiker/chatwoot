@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Campaign, type: :model do
+RSpec.describe Campaign do
   describe 'associations' do
     it { is_expected.to belong_to(:account) }
     it { is_expected.to belong_to(:inbox) }
@@ -15,7 +15,7 @@ RSpec.describe Campaign, type: :model do
     let(:campaign) { build(:campaign, inbox: website_inbox, display_id: nil, trigger_rules: { url: 'https://test.com' }) }
 
     before do
-      campaign.save
+      campaign.save!
       campaign.reload
     end
 
@@ -34,7 +34,7 @@ RSpec.describe Campaign, type: :model do
     let(:campaign) { build(:campaign, inbox: facebook_inbox) }
 
     it 'would not save the campaigns' do
-      expect(campaign.save).to eq false
+      expect(campaign.save).to be false
       expect(campaign.errors.full_messages.first).to eq 'Inbox Unsupported Inbox type'
     end
   end
@@ -46,18 +46,18 @@ RSpec.describe Campaign, type: :model do
 
     it 'would prevent further updates' do
       campaign.title = 'new name'
-      expect(campaign.save).to eq false
+      expect(campaign.save).to be false
       expect(campaign.errors.full_messages.first).to eq 'Status The campaign is already completed'
     end
 
     it 'can be deleted' do
       campaign.destroy!
-      expect(described_class.exists?(campaign.id)).to eq false
+      expect(described_class.exists?(campaign.id)).to be false
     end
 
     it 'cant be triggered' do
       expect(Twilio::OneoffSmsCampaignService).not_to receive(:new).with(campaign: campaign)
-      expect(campaign.trigger!).to eq nil
+      expect(campaign.trigger!).to be_nil
     end
   end
 
@@ -71,7 +71,7 @@ RSpec.describe Campaign, type: :model do
         campaign.campaign_type = 'ongoing'
         campaign.save!
         expect(campaign.reload.campaign_type).to eq 'one_off'
-        expect(campaign.scheduled_at.present?).to eq true
+        expect(campaign.scheduled_at.present?).to be true
       end
 
       it 'calls twilio service on trigger!' do
@@ -92,7 +92,7 @@ RSpec.describe Campaign, type: :model do
         campaign.campaign_type = 'ongoing'
         campaign.save!
         expect(campaign.reload.campaign_type).to eq 'one_off'
-        expect(campaign.scheduled_at.present?).to eq true
+        expect(campaign.scheduled_at.present?).to be true
       end
 
       it 'calls sms service on trigger!' do
@@ -112,6 +112,28 @@ RSpec.describe Campaign, type: :model do
         campaign.save!
         expect(campaign.reload.campaign_type).to eq 'ongoing'
       end
+    end
+  end
+
+  context 'when validating sender' do
+    let(:account) { create(:account) }
+    let(:user) { create(:user, account: account) }
+    let(:web_widget) { create(:channel_widget, account: account) }
+    let(:inbox) { create(:inbox, channel: web_widget, account: account) }
+
+    it 'allows sender from the same account' do
+      campaign = build(:campaign, inbox: inbox, account: account, sender: user)
+      expect(campaign).to be_valid
+    end
+
+    it 'does not allow sender from different account' do
+      other_account = create(:account)
+      other_user = create(:user, account: other_account)
+      campaign = build(:campaign, inbox: inbox, account: account, sender: other_user)
+      expect(campaign).not_to be_valid
+      expect(campaign.errors[:sender_id]).to include(
+        'must belong to the same account as the campaign'
+      )
     end
   end
 end

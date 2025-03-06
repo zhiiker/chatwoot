@@ -1,6 +1,7 @@
 class Api::V1::Accounts::TeamMembersController < Api::V1::Accounts::BaseController
   before_action :fetch_team
   before_action :check_authorization
+  before_action :validate_member_id_params, only: [:create, :update, :destroy]
 
   def index
     @team_members = @team.team_members.map(&:user)
@@ -8,14 +9,14 @@ class Api::V1::Accounts::TeamMembersController < Api::V1::Accounts::BaseControll
 
   def create
     ActiveRecord::Base.transaction do
-      @team_members = members_to_be_added_ids.map { |user_id| @team.add_member(user_id) }
+      @team_members = @team.add_members(members_to_be_added_ids)
     end
   end
 
   def update
     ActiveRecord::Base.transaction do
-      members_to_be_added_ids.each { |user_id| @team.add_member(user_id) }
-      members_to_be_removed_ids.each { |user_id| @team.remove_member(user_id) }
+      @team.add_members(members_to_be_added_ids)
+      @team.remove_members(members_to_be_removed_ids)
     end
     @team_members = @team.members
     render action: 'create'
@@ -23,7 +24,7 @@ class Api::V1::Accounts::TeamMembersController < Api::V1::Accounts::BaseControll
 
   def destroy
     ActiveRecord::Base.transaction do
-      params[:user_ids].map { |user_id| @team.remove_member(user_id) }
+      @team.remove_members(params[:user_ids])
     end
     head :ok
   end
@@ -44,5 +45,11 @@ class Api::V1::Accounts::TeamMembersController < Api::V1::Accounts::BaseControll
 
   def fetch_team
     @team = Current.account.teams.find(params[:team_id])
+  end
+
+  def validate_member_id_params
+    invalid_ids = params[:user_ids].map(&:to_i) - @team.account.user_ids
+
+    render json: { error: 'Invalid User IDs' }, status: :unauthorized and return if invalid_ids.present?
   end
 end
